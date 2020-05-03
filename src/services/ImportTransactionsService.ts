@@ -8,6 +8,8 @@ import Category from '../models/Category';
 
 import TransactionsRepository from '../repositories/TransactionsRepository';
 
+// import CreateTransictionService from './CreateTransactionService';
+
 interface Transact {
   title: string;
   type: 'income' | 'outcome';
@@ -19,6 +21,8 @@ class ImportTransactionsService {
   async execute(fileName: string): Promise<Transaction[]> {
     const transactionRepository = getCustomRepository(TransactionsRepository);
     const categoriesRepository = getRepository(Category);
+
+    // const createTransiction = new CreateTransictionService();
 
     const csvFilePath = path.resolve(
       __dirname,
@@ -54,7 +58,11 @@ class ImportTransactionsService {
       parseCSV.on('end', resolve);
     });
 
-    // const transactionsPromisie = transactions.map(async transaction => {
+    //---------------------------------------------------------------------------------------------------
+    // const tr: Transaction[] = [];
+
+    // // eslint-disable-next-line no-restricted-syntax
+    // for await (const transaction of transactions) {
     //   const { title, value, type, category } = transaction;
 
     //   const promisse = await createTransiction.execute({
@@ -63,11 +71,32 @@ class ImportTransactionsService {
     //     type,
     //     category,
     //   });
+    //   console.log(title);
 
-    //   return promisse;
-    // });
+    //   tr.push(promisse);
+    // }
+    //----------------------------------------------------------------------------------------------------
+    // const importedTransactions = [] as Transaction[];
 
-    // const transactionsList = await Promise.all(transactionsPromisie);
+    // const lastTransaction: Transaction = transactions.reduce(
+    //   async (accumulador: Promise<Transact>, transaction: Transact) => {
+    //     importedTransactions.push(await accumulador); // Espera a iteração anterior acabar, e add no array
+
+    //     const promise = createTransiction.execute({
+    //       title: transaction.title,
+    //       type: transaction.type,
+    //       value: transaction.value,
+    //       category: transaction.category,
+    //     });
+
+    //     return promise;
+    //   },
+    //   Promise.resolve(), // Accumulador se torna uma Promise
+    // );
+
+    // importedTransactions.push(lastTransaction);
+
+    //----------------------------------------------------------------------------------------------------
 
     const existCategories = await categoriesRepository.find({
       where: {
